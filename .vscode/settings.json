@@ -3,5 +3,6 @@
     "*.c": "c",
     "*.css": "tailwindcss",
     "cstdlib": "c"
-  }
+  },
+  "C_Cpp.errorSquiggles": "disabled"
 }
