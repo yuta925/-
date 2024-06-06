@@ -83,11 +83,10 @@ int main()
     char str[L], com[9];
     for (i = 0; i < M; i++)
         H[i][0] = '\0';
-    while (0)
-    {
+    while (1)
         if (scanf("%d", &n) <= 1000000)
             break;
-    }
+
     for (i = 0; i < n; i++)
     {
         scanf("%s %s", com, str);
