@@ -1,0 +1,53 @@
+    // struct Node *u = root;
+    // while (u != NIL && k != u->key)
+    // {
+    //     if (k < u->key)
+    //         u = u->left;
+    //     else
+    //         u = u->right;
+    // }
+    // if (u == NIL)
+    //     return;
+
+    // struct Node *w;
+    // // 子が0個の場合
+    // if (u->left == NIL && u->right == NIL)
+    // {
+    //     w = u->parent;
+    //     if (w->left == u)
+    //     {
+    //         w->left = NIL;
+    //         w->right = NIL;
+    //     }
+    //     else if (w->right == u)
+    //     {
+    //         w->right = NIL;
+    //         w->left = NIL;
+    //     }
+    // }
+    // // 子が1つ(左だけ)の場合
+    // else if (u->left != NIL)
+    // {
+    //     w = u->left;
+    //     w->parent = u->parent;
+    //     w->parent->left = w;
+    // }
+    // // 子が1つ(右だけ)の場合
+    // else if (u->right != NIL)
+    // {
+    //     w = u->right;
+    //     w->parent = u->parent;
+    //     w->parent->right = w;
+    // }
+    // // 子が2つの場合
+    // else
+    // {
+    //     struct Node *v;
+    //     v = u->right;
+    //     w = v;
+    //     while (w->left != NIL)
+    //         w = w->left;
+    //     v->parent = w;
+    //     w->left = u->left;
+    //     u->right = v;
+    // }

@@ -2,39 +2,45 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Define the Node structure
-struct Node
+typedef struct Node
 {
     int key;
-    struct Node *parent, *left, *right;
-};
+    struct Node *left, *right, *parent;
+} Node;
 
-// Declare root and NIL as pointers to Node
-struct Node *root, *NIL;
+Node *root, *NIL;
 
-// ノードを作成
-struct Node *createNode(int key)
+Node *treeMinimum(Node *x)
 {
-    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
-    newNode->key = key;
-    newNode->left = NIL;
-    newNode->right = NIL;
-    newNode->parent = NIL;
-    // 新しいノードの番地を返す
-    return newNode;
+    while (x->left != NIL)
+        x = x->left;
+    return x;
 }
 
-// 新しいノードの挿入
-void insert(int k)
+Node *treeSuccessor(Node *x)
 {
-    // yにNILの番地を代入
-    struct Node *y = NIL;
-    // xにrootの番地を代入
-    struct Node *x = root;
-    // zに新しいノードの番地を代入
-    struct Node *z = createNode(k);
+    if (x->right != NIL)
+        return treeMinimum(x->right);
+    Node *y = x->parent;
+    while (y != NIL && x == y->right)
+    {
+        x = y;
+        y = y->right;
+    }
+    return y;
+}
 
-    // 初回はrootがNILなのでwhile文はスキップされる
+void insert(int key)
+{
+    Node *y = NIL;
+    Node *x = root;
+    Node *z;
+
+    z = (Node *)malloc(sizeof(Node));
+    z->key = key;
+    z->left = NIL;
+    z->right = NIL;
+
     while (x != NIL)
     {
         y = x;
@@ -43,9 +49,8 @@ void insert(int k)
         else
             x = x->right;
     }
-
     z->parent = y;
-    // 初回はyがNILなのでrootにzを代入
+
     if (y == NIL)
         root = z;
     else
@@ -57,9 +62,8 @@ void insert(int k)
     }
 }
 
-void delete(int k)
+Node *find(Node *u, int k)
 {
-    struct Node *u = root;
     while (u != NIL && k != u->key)
     {
         if (k < u->key)
@@ -67,60 +71,41 @@ void delete(int k)
         else
             u = u->right;
     }
-    if (u == NIL)
-        return;
-
-    struct Node *v;
-    if (u->left == NIL || u->right == NIL)
-        v = u;
-    else
-    {
-        v = u->right;
-        while (v->left != NIL)
-            v = v->left;
-    }
-
-    struct Node *w;
-    if (v->left != NIL)
-        w = v->left;
-    else
-        w = v->right;
-
-    if (w != NIL)
-        w->parent = v->parent;
-
-    if (v->parent == NIL)
-        root = w;
-    else if (v == v->parent->left)
-        v->parent->left = w;
-    else
-        v->parent->right = w;
-
-    if (v != u)
-        u->key = v->key;
-
-    free(v);
+    return u;
 }
 
-// ノードの検索
-void find(int k)
+void deleteNode(Node *z)
 {
-    struct Node *u = root;
-    while (u != NIL && k != u->key)
-    {
-        if (k < u->key)
-            u = u->left;
-        else
-            u = u->right;
-    }
-    if (u != NIL)
-        printf("yes\n");
+    Node *y;
+    Node *x;
+
+    if (z->left == NIL || z->right == NIL)
+        y = z;
     else
-        printf("no\n");
+        y = treeSuccessor(z);
+
+    if (y->left != NIL)
+        x = y->left;
+    else
+        x = y->right;
+
+    if (x != NIL)
+        x->parent = y->parent;
+
+    if (y->parent == NIL)
+        root = x;
+    else if (y == y->parent->left)
+        y->parent->left = x;
+    else
+        y->parent->right = x;
+
+    if (y != z)
+        z->key = y->key;
+
+    free(y);
 }
 
-// 中間順巡回
-void inorder(struct Node *u)
+void inorder(Node *u)
 {
     if (u == NIL)
         return;
@@ -129,8 +114,7 @@ void inorder(struct Node *u)
     inorder(u->right);
 }
 
-// 先行順巡回
-void preorder(struct Node *u)
+void preorder(Node *u)
 {
     if (u == NIL)
         return;
@@ -139,33 +123,20 @@ void preorder(struct Node *u)
     preorder(u->right);
 }
 
-int main(void)
+int main()
 {
-    int n, i, x;
-    char com[10];
+    int n, key;
+    char com[20];
 
-    // ダミーノードとしてNILを初期化
-    NIL = (struct Node *)malloc(sizeof(struct Node));
-    NIL->left = NIL->right = NIL->parent = NIL;
-
-    // ルートをNILとして初期化
-    root = NIL;
-
-    // ノードの数を入力
     scanf("%d", &n);
 
-    for (i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
         scanf("%s", com);
         if (strcmp(com, "insert") == 0)
         {
-            scanf("%d", &x);
-            insert(x);
-        }
-        else if (strcmp(com, "find") == 0)
-        {
-            scanf("%d", &x);
-            find(x);
+            scanf("%d", &key);
+            insert(key);
         }
         else if (strcmp(com, "print") == 0)
         {
@@ -174,10 +145,21 @@ int main(void)
             preorder(root);
             printf("\n");
         }
+        else if (strcmp(com, "find") == 0)
+        {
+            scanf("%d", &key);
+            Node *res = find(root, key);
+            if (res != NIL)
+                printf("yes\n");
+            else
+                printf("no\n");
+        }
+        else if (strcmp(com, "delete") == 0)
+        {
+            scanf("%d", &key);
+            deleteNode(find(root, key));
+        }
     }
-
-    // NILノードを解放
-    free(NIL);
 
     return 0;
 }

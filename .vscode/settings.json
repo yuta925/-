@@ -2,7 +2,12 @@
   "files.associations": {
     "*.c": "c",
     "*.css": "tailwindcss",
-    "cstdlib": "c"
+    "cstdlib": "c",
+    "ios": "c",
+    "stdio.h": "c",
+    "__bit_reference": "c",
+    "bitset": "c",
+    "unordered_map": "c"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }
