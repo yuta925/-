@@ -75,7 +75,7 @@ int main(void)
         }
     }
 
-    // r:
+    // 根を探す
     for (i = 0; i < n; i++)
         if (T[i].p == NIL)
             r = i;

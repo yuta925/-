@@ -37,6 +37,8 @@ void insert(int k)
     // 初回はrootがNILなのでwhile文はスキップされる
     while (x != NIL)
     {
+        // ここでは一番深いところまで進む
+        // 深いところのノードをyとする
         y = x;
         if (z->key < x->key)
             x = x->left;
@@ -44,6 +46,7 @@ void insert(int k)
             x = x->right;
     }
 
+    // zの親をyとする
     z->parent = y;
     // 初回はyがNILなのでrootにzを代入
     if (y == NIL)

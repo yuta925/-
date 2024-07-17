@@ -1,0 +1,16 @@
+root: 1
+m: 3
+root: 2
+m: 1
+root: 3
+m: 0
+post_pos: 0, root: 3
+root: 4
+m: 2
+post_pos: 1, root: 4
+post_pos: 2, root: 2
+root: 5
+m: 4
+post_pos: 3, root: 5
+post_pos: 4, root: 1a
+3 4 2 5 1
